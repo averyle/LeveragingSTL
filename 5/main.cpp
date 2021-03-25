@@ -32,7 +32,17 @@ int main() {
     // TODO: populate 'taggedCars' with elements of type Tag<Car> where the tag is set to true
     //  only if the price < 10,000 or if the vin starts with a letter in A...F
 
+    auto pop = [&taggedCars](Car car){
+        if (car.price() < 10000 || (car.vin()[0] >= 'A' && car.vin()[0] <= 'F')) {
+            taggedCars.push_back(Tag<Car>{true, car});
+        } else {
+            taggedCars.push_back(Tag<Car>{false, car});
+        }
+    };
+    std::for_each(cars.begin(), cars.end(), pop);
+    
     // TODO: arrange `taggedCars` so that the elements tagged `true` are at the beginning
     //  and `false` elements are at the ened
+    std::partition(taggedCars.begin(), taggedCars.end(), [](const Tag<Car>& tagged){return tagged.isTagged();});
     std::cout << "Tagged Cars: " << taggedCars << "\n";
 }
